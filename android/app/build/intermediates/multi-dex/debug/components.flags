@@ -1,5 +1,5 @@
--injars 'C:\Users\Srihari\Projects\Apps\react-native-firebase-starter\android\app\build\intermediates\transforms\jarMerging\debug\jars\1\1f\combined.jar'
--outjars 'C:\Users\Srihari\Projects\Apps\react-native-firebase-starter\android\app\build\intermediates\multi-dex\debug\componentClasses.jar'
+-injars 'C:\Users\Srihari\Projects\Apps\Pear\android\app\build\intermediates\transforms\jarMerging\debug\jars\1\1f\combined.jar'
+-outjars 'C:\Users\Srihari\Projects\Apps\Pear\android\app\build\intermediates\multi-dex\debug\componentClasses.jar'
 
 -libraryjars 'E:\AndroidSDK\build-tools\26.0.1\lib\shrinkedAndroid.jar'
 
@@ -10,7 +10,7 @@
 -dontpreverify
 -dontnote **
 -dontwarn **
--printconfiguration 'C:\Users\Srihari\Projects\Apps\react-native-firebase-starter\android\app\build\intermediates\multi-dex\debug\components.flags'
+-printconfiguration 'C:\Users\Srihari\Projects\Apps\Pear\android\app\build\intermediates\multi-dex\debug\components.flags'
 
 
 # view AndroidManifest.xml #generated:34
