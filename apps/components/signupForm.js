@@ -1,8 +1,46 @@
 import React from 'react';
-import { StyleSheet, Platform, Image, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { onChangeText, value, StyleSheet, Platform, Image, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import firebase from 'react-native-firebase';
 
 
 export default class signupForm extends React.Component {
+
+  // firebase state constructor
+  constructor() {
+    super();
+    this.state = {
+      loading: true, //set loading state
+    };
+    alert("signup form");
+  }
+
+  state = { username: '', email: '', password: '', r_password: '', error: '', loading: false };
+
+  onSignUpPress() {
+    alert("onSignUpPress");
+    this.setState({ error: '', loading: true });
+    const { username, email, password, r_password } = this.state;
+    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    .then(
+      () => {
+        this.setState({ error: '', loading: false });
+        alert(this.state.password);
+      })
+    .catch(function(error) {
+    // Handle Errors here.
+      alert(error.code);
+      alert(error.message);
+    // ...
+    });
+  }
+
+  renderButtonOrLoading() {
+    if (this.state.loading) {
+      return <View><ActivityIndicator/></View>
+    }
+    //return <Button onPress={this.onSignInPress.bind(this)} title="Login" />;
+  }
+
 
   render(){
     return(
@@ -10,22 +48,30 @@ export default class signupForm extends React.Component {
           <TextInput style={styles.inputBox}
                   placeholder="Username"
                   placeholderTextColor="#808080"
+                  onChangeText={username => this.setState({username})}
+                  value={this.state.username}
                   />
           <TextInput style={styles.inputBox}
                       placeholder="Email"
                       placeholderTextColor="#808080"
+                      onChangeText={email => this.setState({email})}
+                      value={this.state.email}
                       />
           <TextInput style={styles.inputBox}
                       placeholder="Password"
                       secureTextEntry={true}
                       placeholderTextColor="#808080"
+                      onChangeText={password => this.setState({password})}
+                      value={this.state.password}
                       />
           <TextInput style={styles.inputBox}
                       placeholder="Re-Enter Password"
                       secureTextEntry={true}
                       placeholderTextColor="#808080"
+                      onChangeText={r_password => this.setState({r_password})}
+                      value={this.state.r_password}
                       />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={() => this.onSignUpPress()} style={styles.button}>
             <Text style={styles.buttonText}>{this.props.type}</Text>
           </TouchableOpacity>
       </View>

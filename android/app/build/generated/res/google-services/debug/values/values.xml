@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_web_client_id" translatable="false">978430303556-aolvp1tpg3v9ii0djkunodra49n9s86b.apps.googleusercontent.com</string>
-    <string name="firebase_database_url" translatable="false">https://pear-ad544.firebaseio.com</string>
-    <string name="gcm_defaultSenderId" translatable="false">978430303556</string>
-    <string name="google_api_key" translatable="false">AIzaSyCKrglwWBakVcYoFdr1a0s2RNow9RItLiQ</string>
-    <string name="google_app_id" translatable="false">1:978430303556:android:7e6a05ced003f3a5</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCKrglwWBakVcYoFdr1a0s2RNow9RItLiQ</string>
-    <string name="google_storage_bucket" translatable="false">pear-ad544.appspot.com</string>
-    <string name="project_id" translatable="false">pear-ad544</string>
+    <string name="default_web_client_id" translatable="false">302094454019-vq71r2ht7ofdocoev5qp01tnl5bqhdnu.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://pear-50a28.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">302094454019</string>
+    <string name="google_api_key" translatable="false">AIzaSyBTXbdWl9I27Vbn46CI6c3LaK0Bynq421k</string>
+    <string name="google_app_id" translatable="false">1:302094454019:android:7e6a05ced003f3a5</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBTXbdWl9I27Vbn46CI6c3LaK0Bynq421k</string>
+    <string name="google_storage_bucket" translatable="false">pear-50a28.appspot.com</string>
+    <string name="project_id" translatable="false">pear-50a28</string>
 </resources>

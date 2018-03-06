@@ -38,8 +38,8 @@ javax/annotation/meta/TypeQualifierValidator.class
 com/facebook/react/animated/AnimatedNode.class
 com/facebook/react/modules/statusbar/StatusBarModule.class
 com/facebook/react/modules/storage/AsyncStorageModule.class
-com/facebook/react/bridge/BaseActivityEventListener.class
 com/facebook/share/internal/LikeActionController$CreationCallback.class
+com/facebook/react/bridge/BaseActivityEventListener.class
 com/google/android/gms/internal/zzwl.class
 android/support/multidex/MultiDexExtractor.class
 android/support/v4/media/MediaBrowserCompat$Subscription.class
@@ -153,9 +153,9 @@ com/google/android/gms/internal/zzakl.class
 android/support/v4/view/ViewCompat$AutofillImportance.class
 com/facebook/imagepipeline/cache/MediaVariationsIndexDatabase$LazyIndexDbOpenHelper.class
 com/facebook/reactnative/androidsdk/FBLoginButtonManager.class
+com/facebook/react/bridge/DynamicFromArray.class
 com/facebook/share/model/AppInviteContent$Builder$Destination.class
 com/facebook/share/widget/JoinAppGroupDialog.class
-com/facebook/react/bridge/DynamicFromArray.class
 com/facebook/reactnative/androidsdk/FBAppEventsLoggerModule.class
 com/facebook/react/modules/core/DeviceEventManagerModule.class
 com/google/android/gms/internal/zzzb.class
@@ -471,8 +471,8 @@ com/google/android/gms/internal/zzakj.class
 android/support/compat/R$styleable.class
 com/facebook/react/devsupport/InspectorPackagerConnection$Connection.class
 android/support/v4/media/MediaMetadataCompat$1.class
-com/facebook/react/bridge/ModuleSpec$ConstructorProvider.class
 com/facebook/share/internal/LikeBoxCountView.class
+com/facebook/react/bridge/ModuleSpec$ConstructorProvider.class
 com/facebook/react/modules/timepicker/SupportTimePickerDialogFragment.class
 com/google/android/gms/internal/zzafx.class
 com/google/android/gms/internal/zzadu.class
@@ -871,8 +871,8 @@ com/facebook/infer/annotation/TrueOnNull.class
 android/support/v4/content/res/FontResourcesParserCompat$FetchStrategy.class
 com/facebook/react/uimanager/annotations/ReactPropertyHolder.class
 com/google/android/gms/internal/zzaiv.class
-com/facebook/imagepipeline/core/ImagePipelineExperiments.class
 com/facebook/share/widget/LikeView$Style.class
+com/facebook/imagepipeline/core/ImagePipelineExperiments.class
 android/support/v7/widget/ListPopupWindow.class
 android/support/v4/view/animation/FastOutSlowInInterpolator.class
 com/google/ads/mediation/customevent/CustomEventBannerListener.class
@@ -1306,8 +1306,8 @@ android/support/v4/media/AudioAttributesCompat$AudioManagerHidden.class
 com/facebook/react/devsupport/RedBoxHandler.class
 com/google/firebase/database/PropertyName.class
 com/google/android/gms/internal/zzbfq.class
-com/facebook/share/widget/AppInviteDialog.class
 com/facebook/react/modules/clipboard/ClipboardModule.class
+com/facebook/share/widget/AppInviteDialog.class
 com/google/android/gms/internal/zzalo.class
 com/google/android/gms/internal/zzanh.class
 com/google/android/gms/internal/zzhq.class
@@ -1315,8 +1315,8 @@ com/google/android/gms/internal/zzadb.class
 com/facebook/react/modules/debug/FpsDebugFrameCallback.class
 com/google/android/gms/ads/internal/overlay/zzj.class
 com/google/android/gms/ads/internal/zzaz.class
-com/facebook/react/modules/fresco/FrescoModule.class
 com/facebook/share/model/ShareMedia.class
+com/facebook/react/modules/fresco/FrescoModule.class
 com/facebook/react/flat/RCTTextInput.class
 android/support/v7/appcompat/R$dimen.class
 com/google/android/gms/internal/zzjm.class
