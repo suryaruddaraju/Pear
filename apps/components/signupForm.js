@@ -1,7 +1,7 @@
 import React from 'react';
 import { onChangeText, value, StyleSheet, Platform, Image, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import firebase from 'react-native-firebase';
-
+import { Actions } from 'react-native-router-flux';
 
 export default class signupForm extends React.Component {
 
@@ -11,34 +11,57 @@ export default class signupForm extends React.Component {
     this.state = {
       loading: true, //set loading state
     };
-    alert("signup form");
   }
 
   state = { username: '', email: '', password: '', r_password: '', error: '', loading: false };
 
+  //on signup --> create new user, push initial data to DB, goto home page
   onSignUpPress() {
-    alert("onSignUpPress");
     this.setState({ error: '', loading: true });
     const { username, email, password, r_password } = this.state;
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-    .then(
-      () => {
+    .then(() => {
         this.setState({ error: '', loading: false });
-        alert(this.state.password);
-      })
+        var root = firebase.database().ref();
+
+        var uname = this.state.username;
+        var email = this.state.email;
+        root.set({
+          [uname]: {
+              "Profile": {
+                "Email": email,
+                "Facebook": "",
+                "Instagram": "",
+                "Twitter": "",
+                "Snapchat": "",
+                "LinkedIn": "",
+                "WhatsApp": "",
+              }
+          }
+        })
+        root.child("MAP").set({
+            [email.substring(0, email.length-4)]: uname
+        })
+
+        root.once('value').then(snapshot => {
+            //alert("Hello:  " + snapshot.hasChild("Profile"));
+            //alert("testing");
+        })
+        Actions.home();
+    })
     .catch(function(error) {
     // Handle Errors here.
       alert(error.code);
       alert(error.message);
     // ...
-    });
-  }
+  });
+
+}
 
   renderButtonOrLoading() {
     if (this.state.loading) {
       return <View><ActivityIndicator/></View>
     }
-    //return <Button onPress={this.onSignInPress.bind(this)} title="Login" />;
   }
 
 

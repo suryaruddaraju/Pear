@@ -2,6 +2,8 @@ import React from 'react';
 import { onChangeText, value, StyleSheet, Platform, Image, Text, View, TextInput, TouchableOpacity } from 'react-native';
 //import { APIKEY, AUTHDOMAIN, DATABASEURL, PROJECTID, STORAGEBUCKET, MESSAGINGSENDERID } from 'react-native-dotenv';
 import firebase from 'react-native-firebase';
+import { Actions } from 'react-native-router-flux';
+
 
 export default class Form extends React.Component {
 
@@ -11,32 +13,24 @@ export default class Form extends React.Component {
     this.state = {
       loading: true, //set loading state
     };
-    alert("login form");
   }
-
-  /*componentWillMount() {
-    firebase.initializeApp({ //initializeApp
-      apiKey: APIKEY,
-      authDomain: AUTHDOMAIN,
-      databaseURL: DATABASEURL,
-      projectId: PROJECTID,
-      storageBucket: STORAGEBUCKET,
-      messagingSenderId: MESSAGINGSENDERID
-    });
-  }*/
 
   state = { email: '', password: '', error: '', loading: false };
 
   onSignInPress() {
     this.setState({ error: '', loading: true });
-    //alert(this.state.email);
-    //alert(this.state.password);
     const { email, password } = this.state;
+    em = this.state.email;
     firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password)
     .then(
       () => {
         this.setState({ error: '', loading: false });
-        alert(this.state.password);
+        //alert(this.state.password);
+        var a = firebase.database().ref();
+        a.once('value').then(snapshot => {
+            //alert("YOUR USERNAME: " + snapshot.child("MAP").child(em.substring(0, em.length-4)).val());//.child("Email").val());
+        })
+        Actions.home();
       })
     .catch(function(error) {
     // Handle Errors here.
@@ -44,20 +38,12 @@ export default class Form extends React.Component {
       alert(error.message);
     // ...
     });
-    /*.catch(
-      () => {
-        alert("errrrrr");
-        this.setState({ error: 'Authentication failed.', loading: false });
-        alert(this.state.error);
-
-      })*/
   }
 
   renderButtonOrLoading() {
     if (this.state.loading) {
       return <View><ActivityIndicator/></View>
     }
-    //return <Button onPress={this.onSignInPress.bind(this)} title="Login" />;
   }
 
   render(){
