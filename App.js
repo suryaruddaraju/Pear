@@ -14,7 +14,7 @@ import { Router, Scene } from 'react-native-router-flux';
 export default class App extends React.Component {
 
   componentWillMount() {
-    firebase.initializeApp({
+    firebase.initializeApp({ //initializeApp
       apiKey: APIKEY,
       authDomain: AUTHDOMAIN,
       databaseURL: DATABASEURL,

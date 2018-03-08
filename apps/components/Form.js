@@ -26,7 +26,7 @@ export default class Form extends React.Component {
       () => {
         this.setState({ error: '', loading: false });
         //alert(this.state.password);
-        var a = firebase.database().ref();
+        var a = firebase.database().ref("/Users/");
         a.once('value').then(snapshot => {
             //alert("YOUR USERNAME: " + snapshot.child("MAP").child(em.substring(0, em.length-4)).val());//.child("Email").val());
         })

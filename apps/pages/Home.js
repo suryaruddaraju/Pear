@@ -12,6 +12,7 @@ export default class Home extends Component {
     var em = firebase.auth().currentUser.email;
     db.once('value').then(snapshot => {
         this.username = snapshot.child("MAP").child(em.substring(0, em.length-4)).val();
+        //alert("USERNAME: " + this.username);
     });
   }
 

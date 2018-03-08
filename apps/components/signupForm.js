@@ -19,14 +19,14 @@ export default class signupForm extends React.Component {
   onSignUpPress() {
     this.setState({ error: '', loading: true });
     const { username, email, password, r_password } = this.state;
-    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password)
     .then(() => {
         this.setState({ error: '', loading: false });
         var root = firebase.database().ref();
 
         var uname = this.state.username;
         var email = this.state.email;
-        root.set({
+        root.child("Users").update({
           [uname]: {
               "Profile": {
                 "Email": email,
@@ -39,7 +39,7 @@ export default class signupForm extends React.Component {
               }
           }
         })
-        root.child("MAP").set({
+        root.child("MAP").update({
             [email.substring(0, email.length-4)]: uname
         })
 
@@ -47,7 +47,7 @@ export default class signupForm extends React.Component {
             //alert("Hello:  " + snapshot.hasChild("Profile"));
             //alert("testing");
         })
-        Actions.home();
+        Actions.login();
     })
     .catch(function(error) {
     // Handle Errors here.
