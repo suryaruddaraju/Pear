@@ -11,12 +11,41 @@ export default class Home extends Component {
     constructor() {
       super();
       const em = firebase.auth().currentUser.email;
-      const db = firebase.database().ref();
-      this.state = { username: null, facebook: null, instagram: null, snapchat: null, twitter: null, linkedin: null, whatsapp: null };
-
+      var db = firebase.database().ref();
+      this.state = { username: null, facebook: "FB", instagram: null, snapchat: null, twitter: null, linkedin: null, whatsapp: null };
       db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
           this.setState({
               username: snapshot.val()
+          })
+          db.child("Users").child(this.state.username).child("Profile").child("Facebook").on('value', snapshot => {
+              this.setState({
+                  facebook: snapshot.val()
+              })
+          })
+          db.child("Users").child(this.state.username).child("Profile").child("Instagram").on('value', snapshot => {
+              this.setState({
+                  instagram: snapshot.val()
+              })
+          })
+          db.child("Users").child(this.state.username).child("Profile").child("Snapchat").on('value', snapshot => {
+              this.setState({
+                  snapchat: snapshot.val()
+              })
+          })
+          db.child("Users").child(this.state.username).child("Profile").child("Twitter").on('value', snapshot => {
+              this.setState({
+                  twitter: snapshot.val()
+              })
+          })
+          db.child("Users").child(this.state.username).child("Profile").child("LinkedIn").on('value', snapshot => {
+              this.setState({
+                  linkedin: snapshot.val()
+              })
+          })
+          db.child("Users").child(this.state.username).child("Profile").child("WhatsApp").on('value', snapshot => {
+              this.setState({
+                  whatsapp: snapshot.val()
+              })
           })
       })
     }
@@ -67,10 +96,21 @@ export default class Home extends Component {
       Alert.alert("Changed", "==> " + !this.state.whatSwitchVal);
     }
 
-    _onSaveFunction() {
+    _onSaveFunction = () => {
+        var db = firebase.database().ref();
+        db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
+            db.child("Users").child(snapshot.val()).child("Profile").update({
+                "Facebook": this.state.facebook,
+                "Instagram": this.state.instagram,
+                "Twitter": this.state.twitter,
+                "Snapchat": this.state.snapchat,
+                "LinkedIn": this.state.linkedin,
+                "WhatsApp": this.state.whatsapp,
+            });
+        })
+        alert("DATA SAVED!");
         //Add Firebase code here.
         //On Save, send OPPOSITE of state value, since we're "notting" the value for the switches to work.
-        Alert.alert("Saved.");
     }
 
     _onSignOutFunction() {
@@ -84,6 +124,30 @@ export default class Home extends Component {
         alert(error.message);
       // ...
       });
+    }
+
+    handleSnap = (typedText) => {
+        this.setState({snapchat: typedText});
+    }
+
+    handleFB = (typedText) => {
+        this.setState({facebook: typedText});
+    }
+
+    handleTweet = (typedText) => {
+        this.setState({twitter: typedText});
+    }
+
+    handleLink = (typedText) => {
+        this.setState({linkedin: typedText});
+    }
+
+    handleInsta = (typedText) => {
+        this.setState({instagram: typedText});
+    }
+
+    handleWhat = (typedText) => {
+        this.setState({whatsapp: typedText});
     }
 
     render() {
@@ -132,6 +196,8 @@ export default class Home extends Component {
               <View style={styles.inline}>
                 <TextInput style={styles.editable}
                   placeholder="Snapchat Username"
+                  value={this.state.snapchat}
+                  onChangeText={this.handleSnap}
                 />
                 <View style={styles.switch}>
                   <Switch
@@ -149,6 +215,8 @@ export default class Home extends Component {
               <View style={styles.inline}>
                 <TextInput style={styles.editable}
                   placeholder="Facebook Profile Link"
+                  onChangeText={this.handleFB}
+                  value={this.state.facebook}
                 />
                 <View style={styles.switch}>
                   <Switch
@@ -166,6 +234,8 @@ export default class Home extends Component {
               <View style={styles.inline}>
                 <TextInput style={styles.editable}
                   placeholder="Instagram Handle"
+                  value={this.state.instagram}
+                  onChangeText={this.handleInsta}
                 />
                 <View style={styles.switch}>
                   <Switch
@@ -183,6 +253,8 @@ export default class Home extends Component {
               <View style={styles.inline}>
                 <TextInput style={styles.editable}
                   placeholder="Twitter Username"
+                  value={this.state.twitter}
+                  onChangeText={this.handleTweet}
                 />
                 <View style={styles.switch}>
                   <Switch
@@ -200,6 +272,8 @@ export default class Home extends Component {
               <View style={styles.inline}>
                 <TextInput style={styles.editable}
                   placeholder="Linkedin Profile Link"
+                  value={this.state.linkedin}
+                  onChangeText={this.handleLink}
                 />
                 <View style={styles.switch}>
                   <Switch
@@ -217,6 +291,8 @@ export default class Home extends Component {
               <View style={styles.inline}>
                 <TextInput style={styles.editable}
                   placeholder="WhatsApp Phone #"
+                  value={this.state.whatsapp}
+                  onChangeText={this.handleWhat}
                 />
                 <View style={styles.switch}>
                   <Switch
