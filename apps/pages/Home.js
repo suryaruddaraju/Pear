@@ -2,237 +2,236 @@ import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { Platform, StyleSheet, Text, View, TextInput, Image, CheckBox, Switch, Alert, ScrollView } from 'react-native';
 import { Header, Left, Body, Right, Button, Icon, Title, TouchableOpacity } from 'native-base';
+import { Actions } from 'react-native-router-flux';
+
 //import { Col, Row, Grid } from "react-native-easy-grid";
 
 export default class Home extends Component {
 
-  constructor() {
-    super();
-    var db = firebase.database().ref();
-    var em = firebase.auth().currentUser.email;
-    db.once('value').then(snapshot => {
-        this.username = snapshot.child("MAP").child(em.substring(0, em.length-4)).val();
-        //alert("USERNAME: " + this.username);
-    });
-  }
+    constructor() {
+      super();
+      const em = firebase.auth().currentUser.email;
+      const db = firebase.database().ref();
+      this.state = { username: null, facebook: null, instagram: null, snapchat: null, twitter: null, linkedin: null, whatsapp: null };
 
-  //sets initial condition of switches
-  state = {
-    snapSwitchVal: true,
-    faceSwitchVal: true,
-    instaSwitchVal: true,
-    twitSwitchVal: true
-  }
-
-  snapChangeFunction() {
-    this.setState(state => ({
-      snapSwitchVal: !state.snapSwitchVal
-    }))
-    Alert.alert("Changed", "==> " + !this.state.snapSwitchVal);
-  }
-
-  faceChangeFunction() {
-    this.setState(state => ({
-      faceSwitchVal: !state.faceSwitchVal
-    }))
-    Alert.alert("Changed", "==> " + !this.state.faceSwitchVal);
-  }
-
-  instaChangeFunction() {
-    this.setState(state => ({
-      instaSwitchVal: !state.instaSwitchVal
-    }))
-    Alert.alert("Changed", "==> " + !this.state.instaSwitchVal);
-  }
-
-  twitChangeFunction() {
-    this.setState(state => ({
-     twitSwitchVal: !state.twitSwitchVal
-    }))
-    Alert.alert("Changed", "==> " + !this.state.twitSwitchVal);
-  }
-
-  _onSaveFunction() {
-    //Add Firebase code here.
-    //On Save, send OPPOSITE of state value, since we're "notting" the value for the switches to work.
-    Alert.alert("Saved.");
-  }
-
-  // //functions to handle state changes
-  // _handleToggleSnap = () => this.setState(state => ({
-  //   snapSwitchVal: !state.snapSwitchVal
-  // }))
-
-  // _handleToggleFace = () => this.setState(state => ({
-  //   faceSwitchVal: !state.faceSwitchVal
-  // }))
-
-  // _handleToggleInsta = () => this.setState(state => ({
-  //   instaSwitchVal: !state.instaSwitchVal
-  // }))
-
-  // _handleToggleTwitter = () => this.setState(state => ({
-  //   twitterSwitchVal: !state.twitterSwitchVal
-  // }))
-
-  onSignOut() {
-    this.setState({ error: '', loading: true });
-    firebase.auth().signOut()
-    .then(
-      () => {
-        this.setState({ error: '', loading: false });
-        alert("signed out!");
+      db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
+          this.setState({
+              username: snapshot.val()
+          })
       })
-    .catch(function(error) {
-    // Handle Errors here.
-      alert(error.code);
-      alert(error.message);
-    // ...
-    });
-  }
+    }
 
-  render() {
-    return (
+    //sets initial condition of switches
+    state = {
+      snapSwitchVal: false,
+      faceSwitchVal: false,
+      instaSwitchVal: false,
+      twitSwitchVal: false,
+      linkSwitchVal: false,
+      whatSwitchVal: false,
+    }
 
+    snapChangeFunction() {
+      this.setState(state => ({
+        snapSwitchVal: !state.snapSwitchVal
+      }))
+      Alert.alert("Changed", "==> " + !this.state.snapSwitchVal);
+      // Alert.alert("Value is " + this.state.snapSwitchVal + " plus " + this.state.faceSwitchVal);
+    }
 
+    faceChangeFunction() {
+      this.setState(state => ({
+        faceSwitchVal: !state.faceSwitchVal
+      }))
+      Alert.alert("Changed", "==> " + !this.state.faceSwitchVal);
+    }
 
+    instaChangeFunction() {
+      this.setState(state => ({
+        instaSwitchVal: !state.instaSwitchVal
+      }))
+      Alert.alert("Changed", "==> " + !this.state.instaSwitchVal);
+    }
 
-      <View style={styles.container}>
-        <View>
-          <Header style={styles.header}>
-            <Left style={{flex: 1}}></Left>
-            <Body style={{flex: 1}}>
-              <Text style={styles.title}>Settings</Text>
-            </Body>
-            <Right style={{flex: 1}}>
-              <Button style={styles.buttons} onPress={this._onSaveFunction}>
-                <Text style={styles.buttonText}>Save</Text>
-              </Button>
-            </Right>
-          </Header>
+    linkChangeFunction() {
+      this.setState(state => ({
+       linkSwitchVal: !state.linkSwitchVal
+      }))
+      Alert.alert("Changed", "==> " + !this.state.linkSwitchVal);
+    }
+
+    whatChangeFunction() {
+      this.setState(state => ({
+       whatSwitchVal: !state.whatSwitchVal
+      }))
+      Alert.alert("Changed", "==> " + !this.state.whatSwitchVal);
+    }
+
+    _onSaveFunction() {
+        //Add Firebase code here.
+        //On Save, send OPPOSITE of state value, since we're "notting" the value for the switches to work.
+        Alert.alert("Saved.");
+    }
+
+    _onSignOutFunction() {
+      firebase.auth().signOut()
+      .then(() => {
+          Actions.login();
+        })
+      .catch(function(error) {
+      // Handle Errors here.
+        alert(error.code);
+        alert(error.message);
+      // ...
+      });
+    }
+
+    render() {
+      return (
+        <View style={styles.container}>
+          <View>
+            <Header style={styles.header}>
+              <Left style={{flex: 1}}>
+                <Button style={styles.buttons} onPress={this._onSignOutFunction}>
+                  <Text style={styles.buttonText}>Sign Out</Text>
+                </Button>
+              </Left>
+              <Body style={{flex: 1}}>
+                <Text style={styles.title}>Settings</Text>
+              </Body>
+              <Right style={{flex: 1}}>
+                <Button style={styles.buttons} onPress={this._onSaveFunction}>
+                  <Text style={styles.buttonText}>Save</Text>
+                </Button>
+              </Right>
+            </Header>
+          </View>
+
+          <ScrollView style={styles.body}>
+
+            {/* <View>
+              <Text style={styles.profileInfoHeading}>User Info</Text>
+            </View> */}
+            <View style={{marginTop: 13}}></View>
+            <View style={styles.inlineUserInfo}>
+              <Text style={styles.profileInfo}>Username: {this.state.username}</Text>
+            </View>
+            <View style={styles.inlineUserInfo}>
+              <Text style={styles.profileInfo}>Email: {em}</Text>
+            </View>
+
+            {/* <View>
+              <Text style={styles.profileInfoHeading}>Pearing Apps</Text>
+            </View> */}
+            {/* PEARING APPLICATIONS START HERE ---------------------------------------------------------- */}
+            <View style={{marginTop: 20}}></View>
+            <View>
+              <View>
+                <Text style={styles.pearingInfo}>Snapchat:</Text>
+              </View>
+              <View style={styles.inline}>
+                <TextInput style={styles.editable}
+                  placeholder="Snapchat Username"
+                />
+                <View style={styles.switch}>
+                  <Switch
+                    onValueChange={(value) => this.snapChangeFunction()}
+                    value={this.state.snapSwitchVal}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View>
+              <View>
+                <Text style={styles.pearingInfo}>Facebook:</Text>
+              </View>
+              <View style={styles.inline}>
+                <TextInput style={styles.editable}
+                  placeholder="Facebook Profile Link"
+                />
+                <View style={styles.switch}>
+                  <Switch
+                    onValueChange={(value) => this.faceChangeFunction()}
+                    value={this.state.faceSwitchVal}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View>
+              <View>
+                <Text style={styles.pearingInfo}>Instagram:</Text>
+              </View>
+              <View style={styles.inline}>
+                <TextInput style={styles.editable}
+                  placeholder="Instagram Handle"
+                />
+                <View style={styles.switch}>
+                  <Switch
+                    onValueChange={(value) => this.instaChangeFunction()}
+                    value={this.state.instaSwitchVal}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View>
+              <View>
+                <Text style={styles.pearingInfo}>Twitter:</Text>
+              </View>
+              <View style={styles.inline}>
+                <TextInput style={styles.editable}
+                  placeholder="Twitter Username"
+                />
+                <View style={styles.switch}>
+                  <Switch
+                    onValueChange={(value) => this.twitChangeFunction()}
+                    value={this.state.twitSwitchVal}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View>
+              <View>
+                <Text style={styles.pearingInfo}>Linkedin:</Text>
+              </View>
+              <View style={styles.inline}>
+                <TextInput style={styles.editable}
+                  placeholder="Linkedin Profile Link"
+                />
+                <View style={styles.switch}>
+                  <Switch
+                    onValueChange={(value) => this.linkChangeFunction()}
+                    value={this.state.linkSwitchVal}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View>
+              <View>
+                <Text style={styles.pearingInfo}>WhatsApp:</Text>
+              </View>
+              <View style={styles.inline}>
+                <TextInput style={styles.editable}
+                  placeholder="WhatsApp Phone #"
+                />
+                <View style={styles.switch}>
+                  <Switch
+                    onValueChange={(value) => this.whatChangeFunction()}
+                    value={this.state.whatSwitchVal}
+                  />
+                </View>
+              </View>
+            </View>
+
+          </ScrollView>
         </View>
-
-        <ScrollView style={styles.body}>
-
-          <View>
-            <Text style={styles.profileInfoHeading}>User Info</Text>
-          </View>
-          <View>
-            <Text style={styles.profileInfo}>Username: {this.username}</Text>
-            <Text style={styles.profileValues}>Put variable here!</Text>
-            <Text style={styles.profileInfo}>Email: {em}</Text>
-            <Text style={styles.profileValues}>Put variable here!</Text>
-          </View>
-
-          <View>
-            <Text style={styles.profileInfoHeading}>Pearing Apps</Text>
-          </View>
-
-          <View>
-            <View>
-              <Text style={styles.pearingInfo}>Snapchat:</Text>
-            </View>
-            <View style={styles.inline}>
-              <TextInput style={styles.editable}
-                placeholder="Snapchat Username"
-              />
-              <View style={styles.switch}>
-                <Switch
-                  onValueChange={(value) => this.snapChangeFunction()}
-                  value={this.state.snapSwitchVal}
-                />
-              </View>
-            </View>
-          </View>
-
-          <View>
-            <View>
-              <Text style={styles.pearingInfo}>Facebook:</Text>
-            </View>
-            <View style={styles.inline}>
-              <TextInput style={styles.editable}
-                placeholder="Facebook Profile Link"
-              />
-              <View style={styles.switch}>
-                <Switch
-                  onValueChange={(value) => this.faceChangeFunction()}
-                  value={this.state.faceSwitchVal}
-                />
-              </View>
-            </View>
-          </View>
-
-          <View>
-            <View>
-              <Text style={styles.pearingInfo}>Instagram:</Text>
-            </View>
-            <View style={styles.inline}>
-              <TextInput style={styles.editable}
-                placeholder="Instagram Handle"
-              />
-              <View style={styles.switch}>
-                <Switch
-                  onValueChange={(value) => this.instaChangeFunction()}
-                  value={this.state.instaSwitchVal}
-                />
-              </View>
-            </View>
-          </View>
-
-          <View>
-            <View>
-              <Text style={styles.pearingInfo}>Twitter:</Text>
-            </View>
-            <View style={styles.inline}>
-              <TextInput style={styles.editable}
-                placeholder="Twitter Username"
-              />
-              <View style={styles.switch}>
-                <Switch
-                  onValueChange={(value) => this.twitChangeFunction()}
-                  value={this.state.twitSwitchVal}
-                />
-              </View>
-            </View>
-          </View>
-
-          {/* <View>
-          <Text style={styles.pearingInfo}>Facebook:</Text>
-          </View>
-          <View style={styles.switch}>
-            <Switch
-              onValueChange={(value) => this.faceChangeFunction()}
-              value={this.state.faceSwitchVal}
-            />
-          </View>
-
-          <View>
-          <Text style={styles.pearingInfo}>Instagram:</Text>
-          </View>
-          <View style={styles.switch}>
-            <Switch
-              onValueChange={(value) => this.instaChangeFunction()}
-              value={this.state.instaSwitchVal}
-            />
-          </View>
-
-          <View>
-          <Text style={styles.twitterInfo}>Twitter:</Text>
-          </View>
-          <View style={styles.switch}>
-            <Switch
-              onValueChange={(value) => this.twitChangeFunction()}
-              value={this.state.twitSwitchVal}
-            />
-          </View> */}
-
-
-        </ScrollView>
-      </View>
-
-    )
+      )
+    }
   }
-}
 
 
 const styles = StyleSheet.create({
@@ -267,19 +266,22 @@ const styles = StyleSheet.create({
     color: '#333333',
   },
   profileInfo: {
-    margin: 10,
-    textDecorationLine: 'underline',
-    fontSize: 15,
+    fontWeight: 'bold',
+    // textDecorationLine: 'underline',
+    fontSize: 18,
     color: '#333333',
     // width:
   },
   profileValues: {
-    marginLeft: 15,
+    fontSize: 20,
+
+    marginLeft: 10,
     color: '#000000'
   },
   pearingInfo: {
     margin: 10,
-    textDecorationLine: 'underline',
+    fontWeight: 'bold',
+    // textDecorationLine: 'underline',
     fontSize: 15,
     color: '#333333',
   },
@@ -287,6 +289,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  inlineUserInfo: {
+    marginTop: 10,
+
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   editable: {
     minWidth: 150,

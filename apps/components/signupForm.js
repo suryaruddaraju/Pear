@@ -17,46 +17,56 @@ export default class signupForm extends React.Component {
 
   //on signup --> create new user, push initial data to DB, goto home page
   onSignUpPress() {
-    this.setState({ error: '', loading: true });
-    const { username, email, password, r_password } = this.state;
-    firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password)
-    .then(() => {
-        this.setState({ error: '', loading: false });
-        var root = firebase.database().ref();
-
-        var uname = this.state.username;
-        var email = this.state.email;
-        root.child("Users").update({
-          [uname]: {
-              "Profile": {
-                "Email": email,
-                "Facebook": "",
-                "Instagram": "",
-                "Twitter": "",
-                "Snapchat": "",
-                "LinkedIn": "",
-                "WhatsApp": "",
-              }
+      this.setState({ error: '', loading: true });
+      const { username, email, password, r_password } = this.state;
+      const db = firebase.database().ref();
+      db.child("Users").once('value', snapshot => {
+          if (snapshot.hasChild(this.state.username)){
+            this.setState({
+                error: "TRUE"
+            })
+            alert("This username is already taken. Please choose another.");
           }
-        })
-        root.child("MAP").update({
-            [email.substring(0, email.length-4)]: uname
-        })
+      })
+      if (this.state.error === ''){
+          firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password)
+          .then(() => {
+              this.setState({ error: '', loading: false });
+              var root = firebase.database().ref();
 
-        root.once('value').then(snapshot => {
-            //alert("Hello:  " + snapshot.hasChild("Profile"));
-            //alert("testing");
-        })
-        Actions.login();
-    })
-    .catch(function(error) {
-    // Handle Errors here.
-      alert(error.code);
-      alert(error.message);
-    // ...
-  });
+              var uname = this.state.username;
+              var email = this.state.email;
+              root.child("Users").update({
+                [uname]: {
+                    "Profile": {
+                      "Email": email,
+                      "Facebook": "",
+                      "Instagram": "",
+                      "Twitter": "",
+                      "Snapchat": "",
+                      "LinkedIn": "",
+                      "WhatsApp": "",
+                    }
+                }
+              })
+              root.child("MAP").update({
+                  [email.substring(0, email.length-4)]: uname
+              })
 
-}
+              root.once('value').then(snapshot => {
+                  //alert("Hello:  " + snapshot.hasChild("Profile"));
+                  //alert("testing");
+              })
+              Actions.login();
+          })
+          .catch(function(error) {
+          // Handle Errors here.
+            alert(error.code);
+            alert(error.message);
+          // ...
+        });
+    }
+  }
 
   renderButtonOrLoading() {
     if (this.state.loading) {
