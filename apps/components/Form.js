@@ -1,5 +1,5 @@
 import React from 'react';
-import { onChangeText, value, StyleSheet, Platform, Image, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { onChangeText, value, StyleSheet, Platform, Image, Text, View, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
 //import { APIKEY, AUTHDOMAIN, DATABASEURL, PROJECTID, STORAGEBUCKET, MESSAGINGSENDERID } from 'react-native-dotenv';
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux';
@@ -7,38 +7,55 @@ import { Actions } from 'react-native-router-flux';
 
 export default class Form extends React.Component {
 
+  state = { email: '', password: '', error: '', loading: false };
   // firebase state constructor
   constructor() {
-    super();
-    this.state = {
-      loading: true, //set loading state
-    };
+      super();
+      this.state = {
+          loading: true, //set loading state
+      };
+
+      getEmail = () => {
+          AsyncStorage.getItem('email').then((value) => {
+            this.setState({email: value})
+          });
+          AsyncStorage.getItem('password').then((value) => {
+            this.setState({password: value})
+          });
+      }
+      getEmail();
   }
 
-  state = { email: '', password: '', error: '', loading: false };
-
   onSignInPress() {
+    var db = firebase.database().ref();
     this.setState({ error: '', loading: true });
     const { email, password } = this.state;
     em = this.state.email;
-    firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password)
-    .then(
-      () => {
-        this.setState({ error: '', loading: false });
-        //alert(this.state.password);
-        var a = firebase.database().ref("/Users/");
-        a.once('value').then(snapshot => {
-            //alert("YOUR USERNAME: " + snapshot.child("MAP").child(em.substring(0, em.length-4)).val());//.child("Email").val());
-        })
-        Actions.home();
-      })
-    .catch(function(error) {
+    firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password).then(() => {
+    this.setState({ error: '', loading: false });
+    AsyncStorage.setItem("email", this.state.email);
+    AsyncStorage.setItem("password", this.state.password);
+    /*db.update({
+        "Current": this.state.email,
+    });*/
+    //alert(this.state.password);
+    var a = firebase.database().ref("/Users/");
+    a.once('value').then(snapshot => {
+        //alert("YOUR USERNAME: " + snapshot.child("MAP").child(em.substring(0, em.length-4)).val());//.child("Email").val());
+    })
+    Actions.home();
+}).catch(function(error) {
     // Handle Errors here.
-      alert(error.code);
-      alert(error.message);
-    // ...
+    alert(error.code);
+    alert(error.message);
+        // ...
     });
-  }
+  //})
+  /*.catch(function(error){
+      var errorCode = error.code;
+      var errorMessage = error.message;
+  });*/
+}
 
   renderButtonOrLoading() {
     if (this.state.loading) {

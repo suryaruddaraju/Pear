@@ -12,6 +12,7 @@ export default class Home extends Component {
       super();
       const em = firebase.auth().currentUser.email;
       var db = firebase.database().ref();
+      alert(db);
       this.state = { username: null, facebook: "FB", instagram: null, snapchat: null, twitter: null, linkedin: null, whatsapp: null };
       db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
           this.setState({
