@@ -13,7 +13,7 @@
 -printconfiguration 'C:\Users\Srihari\Projects\Apps\Pear\android\app\build\intermediates\multi-dex\debug\components.flags'
 
 
-# view AndroidManifest.xml #generated:34
+# view AndroidManifest.xml #generated:43
 -keep class com.pearsquad.pear.MainApplication {
     <init>(...);
 }

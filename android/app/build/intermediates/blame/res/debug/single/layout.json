@@ -80,6 +80,10 @@
         "source": "C:\\Users\\Srihari\\Projects\\Apps\\Pear\\android\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\27.0.2\\res\\layout\\abc_activity_chooser_view_list_item.xml"
     },
     {
+        "merged": "C:\\Users\\Srihari\\Projects\\Apps\\Pear\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\surface_view.xml",
+        "source": "C:\\Users\\Srihari\\Projects\\Apps\\Pear\\android\\app\\build\\intermediates\\exploded-aar\\com.github.react-native-community\\cameraview\\cc47bb28ed2fc54a8c56a4ce9ce53edd1f0af3a5\\res\\layout\\surface_view.xml"
+    },
+    {
         "merged": "C:\\Users\\Srihari\\Projects\\Apps\\Pear\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\select_dialog_multichoice_material.xml",
         "source": "C:\\Users\\Srihari\\Projects\\Apps\\Pear\\android\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\27.0.2\\res\\layout\\select_dialog_multichoice_material.xml"
     },

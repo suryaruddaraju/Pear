@@ -8,7 +8,9 @@ import {
     AppRegistry,
     StyleSheet,
     View,
-    TextInput
+    TextInput,
+    TouchableOpacity,
+    Text
 } from 'react-native';
 
 export default class QRCODE extends React.Component {
@@ -25,6 +27,7 @@ export default class QRCODE extends React.Component {
           size={200}
           bgColor='black'
           fgColor='#d1e231'/>
+          <TouchableOpacity onPress={() => Actions.camera()} style={styles.button}><Text style={styles.buttonText}>Scan Code</Text></TouchableOpacity>
       </View>
     );
   };

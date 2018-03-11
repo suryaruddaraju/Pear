@@ -10,6 +10,7 @@ import Login from './apps/pages/Login';
 import Signup from './apps/pages/Signup';
 import Home from './apps/pages/Home';
 import QRCODE from './apps/pages/qr';
+import Cam from './apps/pages/camera';
 
 import { Router, Scene } from 'react-native-router-flux';
 
@@ -34,6 +35,7 @@ export default class App extends React.Component {
           <Scene key="register" component={Signup}/>
           <Scene key="home" component={Home}/>
           <Scene key="qr" component={QRCODE}/>
+          <Scene key="camera" component={Cam}/>
         </Scene>
      </Router>
     )

@@ -29,6 +29,7 @@
     "native-base": "^2.3.9",
     "react": "^16.2.0",
     "react-native": "^0.52.3",
+    "react-native-camera": "^1.0.2",
     "react-native-fbsdk": "^0.7.0",
     "react-native-firebase": "^3.2.5",
     "react-native-qrcode": "^0.2.6",

@@ -24,4 +24,6 @@ target 'Pear' do
   
   pod 'Fabric', '~> 1.7.2'
   pod 'Crashlytics', '~> 3.9.3'
+  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
 end
