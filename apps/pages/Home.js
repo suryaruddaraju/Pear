@@ -4,6 +4,9 @@ import { Platform, StyleSheet, Text, View, TextInput, Image, CheckBox, Switch, A
 import { Header, Left, Body, Right, Button, Icon, Title, TouchableOpacity } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 
+import NavigationBar from 'react-native-navbar';
+
+
 //import { Col, Row, Grid } from "react-native-easy-grid";
 
 export default class Home extends Component {
@@ -11,9 +14,10 @@ export default class Home extends Component {
     constructor() {
       super();
       const em = firebase.auth().currentUser.email;
+      //alert(em);
       var db = firebase.database().ref();
-      alert(db);
       this.state = { username: null, facebook: "FB", instagram: null, snapchat: null, twitter: null, linkedin: null, whatsapp: null };
+      //alert(em);
       db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
           this.setState({
               username: snapshot.val()
@@ -49,6 +53,7 @@ export default class Home extends Component {
               })
           })
       })
+      alert(em);
     }
 
     //sets initial condition of switches
@@ -174,10 +179,10 @@ export default class Home extends Component {
 
           <ScrollView style={styles.body}>
 
-            {/* <View>
-              <Text style={styles.profileInfoHeading}>User Info</Text>
-            </View> */}
             <View style={{marginTop: 13}}></View>
+            <View>
+                <Text style={styles.profileInfoHeading}>User Info</Text>
+            </View>
             <View style={styles.inlineUserInfo}>
               <Text style={styles.profileInfo}>Username: {this.state.username}</Text>
             </View>
@@ -185,9 +190,9 @@ export default class Home extends Component {
               <Text style={styles.profileInfo}>Email: {em}</Text>
             </View>
 
-            {/* <View>
+            <View>
               <Text style={styles.profileInfoHeading}>Pearing Apps</Text>
-            </View> */}
+            </View>
             {/* PEARING APPLICATIONS START HERE ---------------------------------------------------------- */}
             <View style={{marginTop: 20}}></View>
             <View>
@@ -305,10 +310,29 @@ export default class Home extends Component {
             </View>
 
           </ScrollView>
+          <View style={{position: 'absolute', left: 0, right: 0, bottom: 0}}>
+            <NavigationBar
+              tintColor="#006600"
+              leftButton={leftButtonConfig}
+              rightButton={rightButtonConfig}
+            />
+          </View>
         </View>
       )
     }
   }
+
+const rightButtonConfig = {
+    title: 'Contacts',
+    handler: () => Actions.contacts(),
+    tintColor: '#ffffff'
+};
+
+const leftButtonConfig = {
+    title: 'QR',
+    handler: () => Actions.qr(),
+    tintColor: '#ffffff'
+};
 
 
 const styles = StyleSheet.create({
@@ -339,26 +363,26 @@ const styles = StyleSheet.create({
   profileInfoHeading: {
     fontWeight: 'bold',
     fontSize: 22,
+    textAlign: 'center',
     marginTop: 15,
     color: '#333333',
   },
   profileInfo: {
     fontWeight: 'bold',
-    // textDecorationLine: 'underline',
-    fontSize: 18,
+    textDecorationLine: 'underline',
+    fontSize: 15,
     color: '#333333',
     // width:
   },
   profileValues: {
-    fontSize: 20,
-
+    //fontSize: 20,
     marginLeft: 10,
     color: '#000000'
   },
   pearingInfo: {
     margin: 10,
     fontWeight: 'bold',
-    // textDecorationLine: 'underline',
+    textDecorationLine: 'underline',
     fontSize: 15,
     color: '#333333',
   },
@@ -382,5 +406,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 40,
   },
+  rightButtonStyle: {
+    tintColor: '#ffffff'
+  },
+  leftButtonStyle: {
+    tintColor: '#ffffff'
+  }
 
 });

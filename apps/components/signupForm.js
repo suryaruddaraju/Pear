@@ -35,6 +35,7 @@ export default class signupForm extends React.Component {
               var root = firebase.database().ref();
 
               var uname = this.state.username;
+              var uuname = this.state.username + " (You)";
               var email = this.state.email;
               root.child("Users").update({
                 [uname]: {
@@ -46,18 +47,21 @@ export default class signupForm extends React.Component {
                       "Snapchat": "",
                       "LinkedIn": "",
                       "WhatsApp": "",
+                    },
+                    "Contacts": {
+                        [uuname]:uname
                     }
                 }
               })
               root.child("MAP").update({
                   [email.substring(0, email.length-4)]: uname
               })
-
-              root.once('value').then(snapshot => {
-                  //alert("Hello:  " + snapshot.hasChild("Profile"));
-                  //alert("testing");
-              })
-              Actions.login();
+              firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password).then(() => {
+                  this.setState({ error: '', loading: false });
+                  AsyncStorage.setItem("email", this.state.email);
+                  AsyncStorage.setItem("password", this.state.password);
+              });
+              Actions.init();
           })
           .catch(function(error) {
           // Handle Errors here.

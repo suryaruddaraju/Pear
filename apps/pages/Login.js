@@ -47,6 +47,7 @@ const styles= StyleSheet.create({
 
   signupButton : {
     color: '#ffffff',
+    //color: '#000000',
     fontSize: 16,
     fontWeight: '500'
   }
