@@ -309,6 +309,10 @@ export default class Home extends Component {
               </View>
             </View>
 
+            <View>
+              <Text style={{fontSize: 47}}>  </Text>
+            </View>
+
           </ScrollView>
           <View style={{position: 'absolute', left: 0, right: 0, bottom: 0}}>
             <NavigationBar

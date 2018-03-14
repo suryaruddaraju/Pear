@@ -43,7 +43,7 @@ export default class Form extends React.Component {
     a.once('value').then(snapshot => {
         //alert("YOUR USERNAME: " + snapshot.child("MAP").child(em.substring(0, em.length-4)).val());//.child("Email").val());
     })
-    Actions.qr();
+    Actions.contacts();
 }).catch(function(error) {
     // Handle Errors here.
     alert(error.code);

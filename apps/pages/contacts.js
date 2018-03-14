@@ -20,26 +20,33 @@ import NavigationBar from 'react-native-navbar';
 export default class Contacts extends Component {
   constructor() {
     super();
-    this.state = {
-      loading: false,
-      usernames: [],
-      error: null,
-      refreshing: false,
-      myusername: "c"
-    };
+    this.state = { loading: false, usernames: {}, error: null, refreshing: false, myusername: null, contact_list: [] };
     var em = firebase.auth().currentUser.email;
     var db = firebase.database().ref();
-    /*db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
-        //alert("BEFORE: " + this.state.my_username);
-        this.setState({
-            myusername: snapshot.val()
+
+    jsonParse = () => {
+        var jsonObj = {};
+        for (var key in this.state.usernames) {
+            if (this.state.usernames.hasOwnProperty(key)) {
+                jsonObj = {"uname" : key, "name" : this.state.usernames[key] }
+                this.state.contact_list.push(jsonObj);
+            }
+        }
+        for (var i = 0; i < this.state.contact_list.length; i++) {
+            alert(JSON.stringify(this.state.contact_list[i]));
+        }
+    }
+
+    //alert(em);
+    db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
+      this.setState({ myusername: snapshot.val() }, function() {
+        db.child("Users").child(this.state.myusername).child('Contacts').on('value', snapshot => {
+            this.setState({ usernames: snapshot.val() })
+            jsonParse();
+            //alert(JSON.stringify(snapshot.val()));
         })
-        //alert("AFTER: " + this.state.my_username);
-    })
-    db.child("Users").child(this.state.myusername).child('Contacts').on('value', snapshot => {
-        //alert(JSON.stringify(snapshot.val()));
-        alert(Object.keys(JSON.stringify(snapshot.val())));
-    })*/
+      });
+    });
 
   }
 
@@ -71,24 +78,17 @@ export default class Contacts extends Component {
     return (
       <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }} style={{backgroundColor: '#d1e231'}}>
         <FlatList
-          data={this.state.data}
+          data={this.state.contact_list}
           renderItem={({ item }) => (
             <ListItem
-              roundAvatar
-              title={`${item.name.first} ${item.name.last}`}
-              subtitle={item.email}
-              avatar={{ uri: item.picture.thumbnail }}
+              title={item.name}
+              subtitle={item.uname}
               containerStyle={{ borderBottomWidth: 0 }}
             />
           )}
-          keyExtractor={item => item.email}
+          keyExtractor={item => item.uname}
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
-          ListFooterComponent={this.renderFooter}
-          onRefresh={this.handleRefresh}
-          refreshing={this.state.refreshing}
-          onEndReached={this.handleLoadMore}
-          onEndReachedThreshold={50}
         />
       </List>
     );
