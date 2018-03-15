@@ -13,6 +13,7 @@ import QrCode from './apps/pages/qr';
 import Cam from './apps/pages/camera';
 import Init from './apps/pages/init';
 import Contacts from './apps/pages/contacts';
+import ContactDetails from './apps/pages/contactdetail';
 
 import { Router, Scene } from 'react-native-router-flux';
 
@@ -40,6 +41,7 @@ export default class App extends React.Component {
           <Scene key="camera" component={Cam}/>
           <Scene key="init" component={Init}/>
           <Scene key="contacts" component={Contacts}/>
+          <Scene key="contactdetails" component={ContactDetails}/>
         </Scene>
      </Router>
     )

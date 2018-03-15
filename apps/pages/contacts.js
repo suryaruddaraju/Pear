@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator,   Platform,
-  StyleSheet,
-  TextInput,
-  Image,
-  CheckBox,
-  Switch,
-  Alert,
-  ScrollView} from "react-native";
+import { View, Text, FlatList, ActivityIndicator, Platform, StyleSheet, TextInput, Image, CheckBox, Switch, Alert, ScrollView, TouchableWithoutFeedback} from "react-native";
 import { List, ListItem, SearchBar } from "react-native-elements";
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux';
@@ -32,9 +25,9 @@ export default class Contacts extends Component {
                 this.state.contact_list.push(jsonObj);
             }
         }
-        for (var i = 0; i < this.state.contact_list.length; i++) {
+        /*for (var i = 0; i < this.state.contact_list.length; i++) {
             alert(JSON.stringify(this.state.contact_list[i]));
-        }
+        }*/
     }
 
     //alert(em);
@@ -47,7 +40,10 @@ export default class Contacts extends Component {
         })
       });
     });
+  }
 
+  listClick = (item) => {
+      alert(JSON.stringify(item));
   }
 
   renderSeparator = () => {
@@ -80,11 +76,13 @@ export default class Contacts extends Component {
         <FlatList
           data={this.state.contact_list}
           renderItem={({ item }) => (
-            <ListItem
-              title={item.name}
-              subtitle={item.uname}
-              containerStyle={{ borderBottomWidth: 0 }}
-            />
+            <TouchableWithoutFeedback onPress={() => Actions.contactdetails({pname: item.name, username: item.uname})}>
+              <ListItem
+                title={item.name}
+                subtitle={item.uname}
+                containerStyle={{ borderBottomWidth: 0 }}
+              />
+            </TouchableWithoutFeedback>
           )}
           keyExtractor={item => item.uname}
           ItemSeparatorComponent={this.renderSeparator}

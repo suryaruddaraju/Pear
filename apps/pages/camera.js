@@ -4,6 +4,7 @@ import { onChangeText, value, StyleSheet, Platform, Image, Text, View, TextInput
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux';
 import Camera from 'react-native-camera'
+import {RNCamera} from 'react-native-camera'
 
 export default class Cam extends React.Component {
 
@@ -11,56 +12,64 @@ export default class Cam extends React.Component {
   // firebase state constructor
   constructor() {
       super();
-      this.state = {
-          loading: true, //set loading state
-      };
+      this.state = { cam: true, username: null };
+      const em = firebase.auth().currentUser.email;
+      var db = firebase.database().ref();
+      db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
+          this.setState({ username: snapshot.val() });
+          alert(this.state.username);
+      });
   }
 
-  takePicture() {
-      const options = {}
-      this.camera.capture({metadata: options}).then((data) => {
-          console.log(data)
-      }).catch((error) => {
-          console.log(error)
-      })
+  barcodeReceived = (e) => {
+      alert(e.data);
+      this.setState(state => ({ cam: false, added_em: e.data }));
+      db.child("MAP").child(this.state.added_em.substring(0, this.state.added_em.length-4)).on('value', snapshot => {
+          db.child("Users").child(this.state.username).child("Contacts").set({
+              [snapshot.val()]: "KIRAN"
+          });
+      });
+      Actions.qr();
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <Camera
-          ref={(cam) => {
-            this.camera = cam
-          }}
-          style={styles.view}
-          aspect={Camera.constants.Aspect.fill}>
-            <Text
-            style={styles.capture}
-            onPress={this.takePicture.bind(this)}>
-              [CAPTURE_IMAGE]
-            </Text>
-        </Camera>
-      </View>
-    );
-  }
+    if (this.state.cam === true) {
+        return (
+          <View style={styles.container}>
+            <RNCamera
+            ref={ref => {
+              this.camera = ref;
+            }}
+            style = {styles.preview}
+            type={RNCamera.Constants.Type.back}
+            flashMode={RNCamera.Constants.FlashMode.on}
+              // style={styles.view}
+              // aspect={Camera.constants.Aspect.fill}>
+              //   <Text
+              //   style={styles.capture}
+              //   onPress={this.takePicture.bind(this)}>
+              //     [CAPTURE_IMAGE]
+              //   </Text>
+              barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
+              onBarCodeRead={this.barcodeReceived}
+              />
+          </View>
+        );
+   }else{
+     return null;
+   }
+ }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'column',
+    backgroundColor: 'black'
   },
-  view: {
+  preview: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center'
-  },
-  capture: {
-    flex: 0,
-    backgroundColor: 'steelblue',
-    borderRadius: 10,
-    color: 'red',
-    padding: 15,
-    margin: 45
   }
 });
