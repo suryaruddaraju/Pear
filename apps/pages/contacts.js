@@ -31,7 +31,7 @@ export default class Contacts extends Component {
     }
 
     //alert(em);
-    db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
+    db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
       this.setState({ myusername: snapshot.val() }, function() {
         db.child("Users").child(this.state.myusername).child('Contacts').on('value', snapshot => {
             this.setState({ usernames: snapshot.val() })

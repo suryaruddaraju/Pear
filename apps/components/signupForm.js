@@ -1,5 +1,5 @@
 import React from 'react';
-import { onChangeText, value, StyleSheet, Platform, Image, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { onChangeText, value, StyleSheet, Platform, Image, Text, View, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux';
 
@@ -13,13 +13,23 @@ export default class signupForm extends React.Component {
     };
   }
 
-  state = { username: '', email: '', password: '', r_password: '', error: '', loading: false };
+  state = { name: '', username: '', email: '', password: '', r_password: '', error: '', loading: false };
 
   //on signup --> create new user, push initial data to DB, goto home page
   onSignUpPress() {
       this.setState({ error: '', loading: true });
+      if (!this.state.name || !this.state.username || !this.state.password || !this.state.r_password || !this.state.email) {
+          alert("One or more fields have been left blank please fill them out.");
+          return;
+      }
+      if(this.state.password.localeCompare(this.state.r_password) != 0 ) {
+          alert("Passwords dos not match");
+          return;
+      }
+
       const { username, email, password, r_password } = this.state;
       const db = firebase.database().ref();
+
       db.child("Users").once('value', snapshot => {
           if (snapshot.hasChild(this.state.username)){
             this.setState({
@@ -28,6 +38,7 @@ export default class signupForm extends React.Component {
             alert("This username is already taken. Please choose another.");
           }
       })
+
       if (this.state.error === ''){
           firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password)
           .then(() => {
@@ -47,14 +58,14 @@ export default class signupForm extends React.Component {
                       "Snapchat": "",
                       "LinkedIn": "",
                       "WhatsApp": "",
-                    },
-                    "Contacts": {
-                        [uuname]:uname
                     }
                 }
               })
               root.child("MAP").update({
-                  [email.substring(0, email.length-4)]: uname
+                  [email.substring(0, email.length-4)]: {
+                    "username": uname,
+                    "name" : this.state.name
+                  }
               })
               firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password).then(() => {
                   this.setState({ error: '', loading: false });
@@ -82,6 +93,12 @@ export default class signupForm extends React.Component {
   render(){
     return(
       <View style={styles.container}>
+          <TextInput style={styles.inputBox}
+                  placeholder="Name"
+                  placeholderTextColor="#808080"
+                  onChangeText={name => this.setState({name})}
+                  value={this.state.name}
+                  />
           <TextInput style={styles.inputBox}
                   placeholder="Username"
                   placeholderTextColor="#808080"

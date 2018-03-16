@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, TextInput, Image,
-        CheckBox, Switch, Alert, ScrollView, Button, TouchableOpacity } from 'react-native';
+        CheckBox, Switch, Alert, ScrollView, Button, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux';
@@ -25,9 +25,13 @@ export default class Init extends Component {
 
 
   onSaveFunction = () => {
+    if (!this.state.Facebook && !this.state.Snapchat && !this.state.Instagram && !this.state.Twitter && !this.state.LinkedIn && !this.state.WhatsApp) {
+        alert("Please fill out at least one field.");
+        return;
+    }
     var db = firebase.database().ref();
     var em = firebase.auth().currentUser.email;
-    db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
+    db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
         db.child("Users").child(snapshot.val()).child("Profile").update({
             "Facebook": this.state.Facebook,
             "Instagram": this.state.Instagram,

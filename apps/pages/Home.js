@@ -16,9 +16,9 @@ export default class Home extends Component {
       const em = firebase.auth().currentUser.email;
       //alert(em);
       var db = firebase.database().ref();
-      this.state = { username: null, facebook: "FB", instagram: null, snapchat: null, twitter: null, linkedin: null, whatsapp: null };
+      this.state = { eml: em, username: null, facebook: null, instagram: null, snapchat: null, twitter: null, linkedin: null, whatsapp: null };
       //alert(em);
-      db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
+      db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
           this.setState({
               username: snapshot.val()
           })
@@ -104,7 +104,7 @@ export default class Home extends Component {
 
     _onSaveFunction = () => {
         var db = firebase.database().ref();
-        db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
+        db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
             db.child("Users").child(snapshot.val()).child("Profile").update({
                 "Facebook": this.state.facebook,
                 "Instagram": this.state.instagram,
@@ -180,18 +180,11 @@ export default class Home extends Component {
           <ScrollView style={styles.body}>
 
             <View style={{marginTop: 13}}></View>
-            <View>
-                <Text style={styles.profileInfoHeading}>User Info</Text>
-            </View>
             <View style={styles.inlineUserInfo}>
               <Text style={styles.profileInfo}>Username: {this.state.username}</Text>
             </View>
             <View style={styles.inlineUserInfo}>
-              <Text style={styles.profileInfo}>Email: {em}</Text>
-            </View>
-
-            <View>
-              <Text style={styles.profileInfoHeading}>Pearing Apps</Text>
+              <Text style={styles.profileInfo}>Email: {this.state.eml}</Text>
             </View>
             {/* PEARING APPLICATIONS START HERE ---------------------------------------------------------- */}
             <View style={{marginTop: 20}}></View>
@@ -374,7 +367,7 @@ const styles = StyleSheet.create({
   profileInfo: {
     fontWeight: 'bold',
     textDecorationLine: 'underline',
-    fontSize: 15,
+    fontSize: 20,
     color: '#333333',
     // width:
   },
