@@ -33,12 +33,12 @@ export default class Init extends Component {
     var em = firebase.auth().currentUser.email;
     db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
         db.child("Users").child(snapshot.val()).child("Profile").update({
-            "Facebook": this.state.Facebook,
-            "Instagram": this.state.Instagram,
-            "Twitter": this.state.Twitter,
-            "Snapchat": this.state.Snapchat,
-            "LinkedIn": this.state.Linkedin,
-            "WhatsApp": this.state.Whatsapp,
+            "Facebook": {"account" :  this.state.Facebook, "status" : false},
+            "Instagram": {"account" : this.state.Instagram, "status" : false},
+            "Twitter": {"account" : this.state.Twitter, "status" : false},
+            "Snapchat": {"account" : this.state.Snapchat, "status" : false},
+            "LinkedIn": {"account" : this.state.LinkedIn, "status" : false},
+            "WhatsApp": {"account" : this.state.WhatsApp, "status" : false},
         });
     })
     Actions.home();

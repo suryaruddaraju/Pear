@@ -16,7 +16,9 @@ export default class Home extends Component {
       const em = firebase.auth().currentUser.email;
       //alert(em);
       var db = firebase.database().ref();
-      this.state = { eml: em, username: null, facebook: null, instagram: null, snapchat: null, twitter: null, linkedin: null, whatsapp: null };
+      this.state = { eml: em, username: null, facebook: null, instagram: null, snapchat: null, twitter: null, linkedin: null, whatsapp: null,
+                    snapSwitchVal: false, faceSwitchVal: false, instaSwitchVal: false, twitSwitchVal: false, linkSwitchVal: false, whatSwitchVal: false, };
+
       //alert(em);
       db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
           this.setState({
@@ -24,87 +26,133 @@ export default class Home extends Component {
           })
           db.child("Users").child(this.state.username).child("Profile").child("Facebook").on('value', snapshot => {
               this.setState({
-                  facebook: snapshot.val()
+                  facebook: snapshot.val()["account"],
+                  faceSwitchVal: snapshot.val()["status"]
               })
           })
           db.child("Users").child(this.state.username).child("Profile").child("Instagram").on('value', snapshot => {
               this.setState({
-                  instagram: snapshot.val()
+                  instagram: snapshot.val()["account"],
+                  instaSwitchVal: snapshot.val()["status"]
               })
           })
           db.child("Users").child(this.state.username).child("Profile").child("Snapchat").on('value', snapshot => {
               this.setState({
-                  snapchat: snapshot.val()
+                  snapchat: snapshot.val()["account"],
+                  snapSwitchVal: snapshot.val()["status"]
               })
           })
           db.child("Users").child(this.state.username).child("Profile").child("Twitter").on('value', snapshot => {
               this.setState({
-                  twitter: snapshot.val()
+                  twitter: snapshot.val()["account"],
+                  twitSwitchVal: snapshot.val()["status"]
               })
           })
           db.child("Users").child(this.state.username).child("Profile").child("LinkedIn").on('value', snapshot => {
               this.setState({
-                  linkedin: snapshot.val()
+                  linkedin: snapshot.val()["account"],
+                  linkSwitchVal: snapshot.val()["status"]
               })
           })
           db.child("Users").child(this.state.username).child("Profile").child("WhatsApp").on('value', snapshot => {
               this.setState({
-                  whatsapp: snapshot.val()
+                  whatsapp: snapshot.val()["account"],
+                  whatSwitchVal: snapshot.val()["status"]
               })
           })
       })
       alert(em);
     }
 
-    //sets initial condition of switches
-    state = {
-      snapSwitchVal: false,
-      faceSwitchVal: false,
-      instaSwitchVal: false,
-      twitSwitchVal: false,
-      linkSwitchVal: false,
-      whatSwitchVal: false,
+    componentWillMount() {
+
     }
+
+    //sets initial condition of switches
+
 
     snapChangeFunction() {
       this.setState(state => ({
-        snapSwitchVal: !state.snapSwitchVal
+        snapSwitchVal: !this.state.snapSwitchVal
       }))
+      var db = firebase.database().ref();
+      db.child("MAP").child(this.state.eml.substring(0, this.state.eml.length-4)).child("username").on('value', snapshot => {
+          db.child("Users").child(snapshot.val()).child("Profile").child("Snapchat").update({
+                "status" : this.state.snapSwitchVal
+          });
+      })
       Alert.alert("Changed", "==> " + !this.state.snapSwitchVal);
       // Alert.alert("Value is " + this.state.snapSwitchVal + " plus " + this.state.faceSwitchVal);
     }
 
     faceChangeFunction() {
       this.setState(state => ({
-        faceSwitchVal: !state.faceSwitchVal
+        faceSwitchVal: !this.state.faceSwitchVal
       }))
+      var db = firebase.database().ref();
+      db.child("MAP").child(this.state.eml.substring(0, this.state.eml.length-4)).child("username").on('value', snapshot => {
+          db.child("Users").child(snapshot.val()).child("Profile").child("Facebook").update({
+                "status" : this.state.faceSwitchVal
+          });
+      })
       Alert.alert("Changed", "==> " + !this.state.faceSwitchVal);
     }
 
     instaChangeFunction() {
       this.setState(state => ({
-        instaSwitchVal: !state.instaSwitchVal
+        instaSwitchVal: !this.state.instaSwitchVal
       }))
+      var db = firebase.database().ref();
+      db.child("MAP").child(this.state.eml.substring(0, this.state.eml.length-4)).child("username").on('value', snapshot => {
+          db.child("Users").child(snapshot.val()).child("Profile").child("Instagram").update({
+                "status" : this.state.instaSwitchVal
+          });
+      })
       Alert.alert("Changed", "==> " + !this.state.instaSwitchVal);
+    }
+
+    twitChangeFunction() {
+      this.setState(state => ({
+        twitSwitchVal: !this.state.twitSwitchVal
+      }))
+      var db = firebase.database().ref();
+      db.child("MAP").child(this.state.eml.substring(0, this.state.eml.length-4)).child("username").on('value', snapshot => {
+          db.child("Users").child(snapshot.val()).child("Profile").child("Twitter").update({
+                "status" : this.state.twitSwitchVal
+          });
+      })
+      Alert.alert("Changed", "==> " + !this.state.twitSwitchVal);
     }
 
     linkChangeFunction() {
       this.setState(state => ({
-       linkSwitchVal: !state.linkSwitchVal
+       linkSwitchVal: !this.state.linkSwitchVal
       }))
+      var db = firebase.database().ref();
+      db.child("MAP").child(this.state.eml.substring(0, this.state.eml.length-4)).child("username").on('value', snapshot => {
+          db.child("Users").child(snapshot.val()).child("Profile").child("LinkedIn").update({
+                "status" : this.state.linkSwitchVal
+          });
+      })
       Alert.alert("Changed", "==> " + !this.state.linkSwitchVal);
     }
 
     whatChangeFunction() {
       this.setState(state => ({
-       whatSwitchVal: !state.whatSwitchVal
+       whatSwitchVal: !state.this.whatSwitchVal
       }))
+      var db = firebase.database().ref();
+      db.child("MAP").child(this.state.eml.substring(0, this.state.eml.length-4)).child("username").on('value', snapshot => {
+          db.child("Users").child(snapshot.val()).child("Profile").child("WhatsApp").update({
+                "status" : this.state.whatSwitchVal
+          });
+      })
       Alert.alert("Changed", "==> " + !this.state.whatSwitchVal);
     }
 
     _onSaveFunction = () => {
         var db = firebase.database().ref();
-        db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
+        db.child("MAP").child(this.state.eml.substring(0, this.state.eml.length-4)).child("username").on('value', snapshot => {
             db.child("Users").child(snapshot.val()).child("Profile").update({
                 "Facebook": this.state.facebook,
                 "Instagram": this.state.instagram,

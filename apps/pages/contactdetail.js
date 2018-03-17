@@ -14,35 +14,47 @@ export default class ContactDetails extends Component {
     this.state = { snapchat:  null, facebook:  null, instagram: null, twitter:   null, linkedIn:  null, whatsApp:  null };
     var db = firebase.database().ref();
     db.child("Users").child(this.props.username).child("Profile").child("Facebook").on('value', snapshot => {
-        this.setState({
-            facebook: snapshot.val()
-        })
+        if(snapshot.val()["status"]){
+            this.setState({
+                facebook: snapshot.val()["account"]
+            })
+        }
     })
     db.child("Users").child(this.props.username).child("Profile").child("Instagram").on('value', snapshot => {
-        this.setState({
-            instagram: snapshot.val()
-        })
+        if(snapshot.val()["status"]){
+            this.setState({
+                instagram: snapshot.val()["account"]
+            })
+        }
         //alert(snapshot.val());
     })
     db.child("Users").child(this.props.username).child("Profile").child("Snapchat").on('value', snapshot => {
-        this.setState({
-            snapchat: snapshot.val()
-        })
+        if(snapshot.val()["status"]){
+            this.setState({
+                snapchat: snapshot.val()["account"]
+            })
+        }
     })
     db.child("Users").child(this.props.username).child("Profile").child("Twitter").on('value', snapshot => {
-        this.setState({
-            twitter: snapshot.val()
-        })
+        if(snapshot.val()["status"]){
+            this.setState({
+                twitter: snapshot.val()["account"]
+            })
+        }
     })
     db.child("Users").child(this.props.username).child("Profile").child("LinkedIn").on('value', snapshot => {
-        this.setState({
-            linkedin: snapshot.val()
-        })
+        if(snapshot.val()["status"]){
+            this.setState({
+                linkedin: snapshot.val()["account"]
+            })
+        }
     })
     db.child("Users").child(this.props.username).child("Profile").child("WhatsApp").on('value', snapshot => {
-        this.setState({
-            whatsapp: snapshot.val()
-        })
+        if(snapshot.val()["status"]){
+            this.setState({
+                whatsapp: snapshot.val()["account"]
+            })
+        }
     })
   }
 

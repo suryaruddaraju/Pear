@@ -13,31 +13,47 @@ import NavigationBar from 'react-native-navbar';
 export default class Contacts extends Component {
   constructor() {
     super();
-    this.state = { loading: false, usernames: {}, error: null, refreshing: false, myusername: null, contact_list: [] };
+    this.state = { loading: false, usernames: {}, error: null, refreshing: false, myusername: null, contact_list: [{"uname":"VALUE", "name": "VALUE"}] };
     var em = firebase.auth().currentUser.email;
     var db = firebase.database().ref();
+    //alert("1");
 
     jsonParse = () => {
+      //alert("6");
         var jsonObj = {};
         for (var key in this.state.usernames) {
-            if (this.state.usernames.hasOwnProperty(key)) {
-                jsonObj = {"uname" : key, "name" : this.state.usernames[key] }
-                this.state.contact_list.push(jsonObj);
-            }
+            //alert("7");
+            //alert(key);
+            //if (this.state.usernames.hasOwnProperty(key)) {
+            jsonObj = {"uname" : key, "name" : this.state.usernames[key]}
+                //alert(JSON.stringify(jsonObj));
+            this.state.contact_list.push(jsonObj);
+                //alert(JSON.stringify(this.state.contact_list));
+            //}
         }
+        //alert("8");
+        //alert("CONTACT LIST: " + JSON.stringify(this.state.contact_list))
         /*for (var i = 0; i < this.state.contact_list.length; i++) {
             alert(JSON.stringify(this.state.contact_list[i]));
         }*/
     }
+    //alert("2");
+
 
     //alert(em);
     db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
-      this.setState({ myusername: snapshot.val() }, function() {
-        db.child("Users").child(this.state.myusername).child('Contacts').on('value', snapshot => {
-            this.setState({ usernames: snapshot.val() })
-            jsonParse();
-            //alert(JSON.stringify(snapshot.val()));
-        })
+        //alert("3");
+        this.setState({ myusername: snapshot.val() }, function() {
+            alert("4");
+            db.child("Users").child(this.state.myusername).child('Contacts').on('value', snapshot => {
+                //alert("5");
+                //alert("SNAPSHOT VAL: " + JSON.stringify(snapshot.val()));
+                this.setState({ usernames: snapshot.val() })
+                //alert("USERNAMES LIST: " + this.state.usernames);
+                jsonParse();
+                //alert("CONTACT LIST 2: " + JSON.stringify(this.state.contact_list))
+                //alert(JSON.stringify(snapshot.val()));
+            })
       });
     });
   }
@@ -76,15 +92,15 @@ export default class Contacts extends Component {
         <FlatList
           data={this.state.contact_list}
           renderItem={({ item }) => (
-            <TouchableWithoutFeedback onPress={() => Actions.contactdetails({pname: item.name, username: item.uname})}>
+            <TouchableWithoutFeedback onPress={() => Actions.contactdetails({pname: item["name"], username: item["uname"]})}>
               <ListItem
-                title={item.name}
-                subtitle={item.uname}
+                title={item["name"]}
+                subtitle={item["uname"]}
                 containerStyle={{ borderBottomWidth: 0 }}
               />
             </TouchableWithoutFeedback>
           )}
-          keyExtractor={item => item.uname}
+          keyExtractor={item => item["uname"]}
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
         />

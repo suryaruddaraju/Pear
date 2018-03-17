@@ -15,23 +15,24 @@ export default class Cam extends React.Component {
       this.state = { cam: true, username: null };
       const em = firebase.auth().currentUser.email;
       const db = firebase.database().ref();
-      db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
+      db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
           this.setState({ username: snapshot.val() });
-          alert(this.state.username);
-          alert("UPDATED");
+          //alert(this.state.username);
+          //alert("UPDATED");
       });
   }
 
   barcodeReceived = (e) => {
       const db = firebase.database().ref();
-      alert(e.data);
+      //alert(e.data);
       this.setState(state => ({ cam: false, added_em: e.data }));
       db.child("MAP").child(e.data.substring(0, e.data.length-4)).on('value', snapshot => {
+          alert("snapshot.val(): " + JSON.stringify(snapshot.val()));
           db.child("Users").child(this.state.username).child("Contacts").set({
-              [snapshot.val()]: "KIRAN"
+              [snapshot.val()["username"]]: snapshot.val()["name"]
           });
       });
-      Actions.init();
+      Actions.qr();
   }
 
   render() {
