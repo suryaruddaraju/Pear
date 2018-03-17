@@ -11,12 +11,12 @@ export default class Home extends Component {
   constructor() {
     super();
     const em = firebase.auth().currentUser.email;
-    //alert(em);
+
     var db = firebase.database().ref();
     this.state = { eml: em, username: null, facebook: null, instagram: null, snapchat: null, twitter: null, linkedin: null, whatsapp: null,
                   snapSwitchVal: false, faceSwitchVal: false, instaSwitchVal: false, twitSwitchVal: false, linkSwitchVal: false, whatSwitchVal: false, };
 
-    //alert(em);
+
     db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
         this.setState({
             username: snapshot.val()
@@ -58,7 +58,7 @@ export default class Home extends Component {
             })
         })
     })
-    alert(em);
+
   }
 
   componentWillMount() {
@@ -78,8 +78,6 @@ export default class Home extends Component {
               "status" : this.state.snapSwitchVal
         });
     })
-    Alert.alert("Changed", "==> " + !this.state.snapSwitchVal);
-    // Alert.alert("Value is " + this.state.snapSwitchVal + " plus " + this.state.faceSwitchVal);
   }
 
   faceChangeFunction() {
@@ -92,7 +90,7 @@ export default class Home extends Component {
               "status" : this.state.faceSwitchVal
         });
     })
-    Alert.alert("Changed", "==> " + !this.state.faceSwitchVal);
+
   }
 
   instaChangeFunction() {
@@ -105,7 +103,7 @@ export default class Home extends Component {
               "status" : this.state.instaSwitchVal
         });
     })
-    Alert.alert("Changed", "==> " + !this.state.instaSwitchVal);
+
   }
 
   twitChangeFunction() {
@@ -118,7 +116,6 @@ export default class Home extends Component {
               "status" : this.state.twitSwitchVal
         });
     })
-    Alert.alert("Changed", "==> " + !this.state.twitSwitchVal);
   }
 
   linkChangeFunction() {
@@ -131,7 +128,7 @@ export default class Home extends Component {
               "status" : this.state.linkSwitchVal
         });
     })
-    Alert.alert("Changed", "==> " + !this.state.linkSwitchVal);
+
   }
 
   whatChangeFunction() {
@@ -144,7 +141,7 @@ export default class Home extends Component {
               "status" : this.state.whatSwitchVal
         });
     })
-    Alert.alert("Changed", "==> " + !this.state.whatSwitchVal);
+
   }
 
   _onSaveFunction = () => {
@@ -169,7 +166,7 @@ export default class Home extends Component {
                 "account": this.state.whatsapp,
             });
         })
-        alert("DATA SAVED!");
+
     }
 
   _onSignOutFunction() {

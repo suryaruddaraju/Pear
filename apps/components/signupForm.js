@@ -39,7 +39,7 @@ export default class signupForm extends React.Component {
     })
 
     if (this.state.error === ''){
-        firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.password)
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(() => {
             this.setState({ error: '', loading: false });
             var root = firebase.database().ref();

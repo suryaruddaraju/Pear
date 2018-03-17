@@ -24,12 +24,10 @@ export default class camera extends Component {
     var contacts = {};
       this.setState(state => ({ cam: false, added_em: e.data }));
       db.child("MAP").child(e.data.substring(0, e.data.length-4)).on('value', snapshot => {
-          alert("snapshot.val(): " + JSON.stringify(snapshot.val()));
           db.child("Users").child(this.state.username).child("Contacts").on('value', snapshot => {
               contacts = snapshot.val();
           })
           contacts[snapshot.val()["username"]] = snapshot.val()["name"];
-          alert("contacts: " + JSON.stringify(contacts));
       });
   }
 

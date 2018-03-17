@@ -32,7 +32,6 @@ export default class Contacts extends Component {
     }
 
     listClick = (item) => {
-      alert(JSON.stringify(item));
   }
 
   renderSeparator = () => {
