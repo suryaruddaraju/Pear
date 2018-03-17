@@ -2,8 +2,6 @@ import React from 'react';
 import { StyleSheet, Platform, Image, Text, View, StatusBar } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
-//import { APIKEY, AUTHDOMAIN, DATABASEURL, PROJECTID, STORAGEBUCKET, MESSAGINGSENDERID } from 'react-native-dotenv';
-
 import firebase from 'react-native-firebase';
 
 import Login from './apps/pages/Login';
@@ -21,14 +19,7 @@ import { Router, Scene } from 'react-native-router-flux';
 export default class App extends React.Component {
 
   componentWillMount() {
-    /*firebase.initializeApp({ //initializeApp
-      apiKey: APIKEY,
-      authDomain: AUTHDOMAIN,
-      databaseURL: DATABASEURL,
-      projectId: PROJECTID,
-      storageBucket: STORAGEBUCKET,
-      messagingSenderId: MESSAGINGSENDERID
-    });*/
+
   }
 
   render() {

@@ -48,11 +48,6 @@ export default class QrCode extends React.Component {
   };
 }
 
-// <View style={{marginTop: 50}}>
-// <TouchableOpacity onPress={() => Actions.cam()} style={styles.button}>
-//          <Text style={styles.buttonText} >Scan Code</Text>
-//          </TouchableOpacity>
-// </View>
 
 const styles= StyleSheet.create({
   container : {

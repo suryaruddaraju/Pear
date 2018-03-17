@@ -42,9 +42,6 @@ export default class Init extends Component {
           });
       })
       Actions.home();
-      //Add Firebase code here.
-      //On Save, send OPPOSITE of state value, since we're "notting" the value for the switches to work.
-      //Alert.alert("Saved.");
     }
 
   render() {

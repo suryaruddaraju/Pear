@@ -59,7 +59,7 @@ export default class ContactDetails extends Component {
   }
 
   _onBackFunction = () => {
-    Alert.alert("You have clicked back.");
+    Actions.contacts();
   }
 
   render() {

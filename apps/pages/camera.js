@@ -16,15 +16,12 @@ export default class camera extends Component {
     const db = firebase.database().ref();
     db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
         this.setState({ username: snapshot.val() });
-        //alert(this.state.username);
-        //alert("UPDATED");
     });
   }
 
   barcodeReceived = (e) => {
     const db = firebase.database().ref();
     var contacts = {};
-      //alert(e.data);
       this.setState(state => ({ cam: false, added_em: e.data }));
       db.child("MAP").child(e.data.substring(0, e.data.length-4)).on('value', snapshot => {
           alert("snapshot.val(): " + JSON.stringify(snapshot.val()));
@@ -34,12 +31,10 @@ export default class camera extends Component {
           contacts[snapshot.val()["username"]] = snapshot.val()["name"];
           alert("contacts: " + JSON.stringify(contacts));
       });
-      //Actions.qr();
   }
 
 
   render() {
-    //alert(this.state.cam);
     if (this.state.cam === true) {
     return (
       <View style={styles.container}>
@@ -50,13 +45,6 @@ export default class camera extends Component {
         style = {styles.preview}
         type={RNCamera.Constants.Type.back}
         flashMode={RNCamera.Constants.FlashMode.on}
-          // style={styles.view}
-          // aspect={Camera.constants.Aspect.fill}>
-          //   <Text
-          //   style={styles.capture}
-          //   onPress={this.takePicture.bind(this)}>
-          //     [CAPTURE_IMAGE]
-          //   </Text>
           barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
           onBarCodeRead={this.barcodeReceived}
           />
@@ -66,7 +54,6 @@ export default class camera extends Component {
    }
    else{
      return null;
-  //   alert("null");
    }
 //  }
 }

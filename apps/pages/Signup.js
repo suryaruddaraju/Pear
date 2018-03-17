@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Platform, Image, Text, View, StatusBar, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-//import { APIKEY, AUTHDOMAIN, DATABASEURL, PROJECTID, STORAGEBUCKET, MESSAGINGSENDERID } from 'react-native-dotenv';
 
 import firebase from 'react-native-firebase';
 

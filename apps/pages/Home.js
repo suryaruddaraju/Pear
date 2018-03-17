@@ -3,10 +3,8 @@ import firebase from 'react-native-firebase';
 import { Platform, StyleSheet, Text, View, TextInput, Image, CheckBox, Switch, Alert, ScrollView } from 'react-native';
 import { Header, Left, Body, Right, Button, Icon, Title, TouchableOpacity } from 'native-base';
 import { Actions } from 'react-native-router-flux';
-//import { Container, Header, Content, Footer, FooterTab, Button, Icon, Body, Title } from 'native-base';
 import Tabbar from '../components/Tabbar';
 
-//import { Col, Row, Grid } from "react-native-easy-grid";
 
 export default class Home extends Component {
 
@@ -172,8 +170,6 @@ export default class Home extends Component {
             });
         })
         alert("DATA SAVED!");
-        //Add Firebase code here.
-        //On Save, send OPPOSITE of state value, since we're "notting" the value for the switches to work.
     }
 
   _onSignOutFunction() {
