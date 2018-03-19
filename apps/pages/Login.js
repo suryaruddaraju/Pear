@@ -9,6 +9,7 @@ import Form from '../components/Form';
 
 export default class Login extends React.Component {
 
+  //loads up the login form
   render() {
     return(
       <View style={styles.container}>
@@ -47,7 +48,6 @@ const styles= StyleSheet.create({
 
   signupButton : {
     color: '#ffffff',
-    //color: '#000000',
     fontSize: 16,
     fontWeight: '500'
   }

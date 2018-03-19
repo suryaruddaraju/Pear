@@ -4,12 +4,12 @@ import { Platform, StyleSheet, Text, View, TextInput, Image, CheckBox, Switch, A
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import { Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
 import firebase from 'react-native-firebase';
-
+import { Actions } from 'react-native-router-flux';
 
 export default class ContactDetails extends Component {
   constructor(props) {
     //sets initial condition of switches
-    //pull from FB!
+    //pull from DB
     super(props);
     this.state = { snapchat:  null, facebook:  null, instagram: null, twitter:   null, linkedIn:  null, whatsApp:  null };
     var db = firebase.database().ref();
@@ -26,7 +26,6 @@ export default class ContactDetails extends Component {
                 instagram: snapshot.val()["account"]
             })
         }
-        //alert(snapshot.val());
     })
     db.child("Users").child(this.props.username).child("Profile").child("Snapchat").on('value', snapshot => {
         if(snapshot.val()["status"]){
@@ -59,7 +58,7 @@ export default class ContactDetails extends Component {
   }
 
   _onBackFunction = () => {
-    Alert.alert("You have clicked back.");
+    Actions.contacts();
   }
 
   render() {

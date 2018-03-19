@@ -26,6 +26,7 @@ export default class Form extends React.Component {
       getEmail();
   }
 
+  //signs the user in and saves their login information so they can log back in quickly
   onSignInPress() {
     var db = firebase.database().ref();
     this.setState({ error: '', loading: true });
@@ -35,26 +36,17 @@ export default class Form extends React.Component {
     this.setState({ error: '', loading: false });
     AsyncStorage.setItem("email", this.state.email);
     AsyncStorage.setItem("password", this.state.password);
-    /*db.update({
-        "Current": this.state.email,
-    });*/
-    //alert(this.state.password);
+    
     var a = firebase.database().ref("/Users/");
     a.once('value').then(snapshot => {
-        //alert("YOUR USERNAME: " + snapshot.child("MAP").child(em.substring(0, em.length-4)).val());//.child("Email").val());
+
     })
-    Actions.contacts();
+    Actions.qr();
 }).catch(function(error) {
     // Handle Errors here.
     alert(error.code);
     alert(error.message);
-        // ...
     });
-  //})
-  /*.catch(function(error){
-      var errorCode = error.code;
-      var errorMessage = error.message;
-  });*/
 }
 
   renderButtonOrLoading() {

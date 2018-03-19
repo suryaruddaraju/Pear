@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, TextInput, Image,
-        CheckBox, Switch, Alert, ScrollView, Button, TouchableOpacity, AsyncStorage } from 'react-native';
+        CheckBox, Switch, Alert, ScrollView, Button, TouchableOpacity } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux';
+import { Header, Body, Icon, Title } from 'native-base';
 
 export default class Init extends Component {
   constructor() {
     super();
     var em = firebase.auth().currentUser.email;
-    alert(em);
   }
 
   //sets initial condition of switches
@@ -23,29 +23,27 @@ export default class Init extends Component {
   }
 
 
-
+  //when saved the data is pushed to the database
+  //the user must enter at least one field in order to move on
   onSaveFunction = () => {
-    if (!this.state.Facebook && !this.state.Snapchat && !this.state.Instagram && !this.state.Twitter && !this.state.LinkedIn && !this.state.WhatsApp) {
-        alert("Please fill out at least one field.");
-        return;
+      if (!this.state.Facebook && !this.state.Snapchat && !this.state.Instagram && !this.state.Twitter && !this.state.LinkedIn && !this.state.WhatsApp) {
+          alert("Please fill out at least one field.");
+          return;
+      }
+      var db = firebase.database().ref();
+      var em = firebase.auth().currentUser.email;
+      db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
+          db.child("Users").child(snapshot.val()).child("Profile").update({
+              "Facebook": {"account" :  this.state.Facebook, "status" : false},
+              "Instagram": {"account" : this.state.Instagram, "status" : false},
+              "Twitter": {"account" : this.state.Twitter, "status" : false},
+              "Snapchat": {"account" : this.state.Snapchat, "status" : false},
+              "LinkedIn": {"account" : this.state.LinkedIn, "status" : false},
+              "WhatsApp": {"account" : this.state.WhatsApp, "status" : false},
+          });
+      })
+      Actions.home();
     }
-    var db = firebase.database().ref();
-    var em = firebase.auth().currentUser.email;
-    db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
-        db.child("Users").child(snapshot.val()).child("Profile").update({
-            "Facebook": {"account" :  this.state.Facebook, "status" : false},
-            "Instagram": {"account" : this.state.Instagram, "status" : false},
-            "Twitter": {"account" : this.state.Twitter, "status" : false},
-            "Snapchat": {"account" : this.state.Snapchat, "status" : false},
-            "LinkedIn": {"account" : this.state.LinkedIn, "status" : false},
-            "WhatsApp": {"account" : this.state.WhatsApp, "status" : false},
-        });
-    })
-    Actions.home();
-    //Add Firebase code here.
-    //On Save, send OPPOSITE of state value, since we're "notting" the value for the switches to work.
-    //Alert.alert("Saved.");
-  }
 
   render() {
 
@@ -78,19 +76,26 @@ export default class Init extends Component {
 
     return (
       <View style={styles.container}>
+      <View>
+        <Header style={styles.header}>
+          <Body style={{flex: 1}}>
+            <Text style={styles.title}>Add Information</Text>
+          </Body>
+        </Header>
+      </View>
         <View style={styles.body}>
+
+          <View style={styles.spacing}>
+            <Table style={styles.table} borderStyle={{borderWidth: 0, borderColor: '#000000'}}>
+              <Rows data={tableData} textStyle={styles.text} widthArr={[100, 300]}/>
+            </Table>
+          </View>
 
           <View style={styles.spacing2}>
             <TouchableOpacity style={styles.saveButton}
                               onPress={this.onSaveFunction}>
                               <Text style={styles.saveText}>Save</Text>
             </TouchableOpacity>
-          </View>
-
-          <View style={styles.spacing}>
-            <Table style={styles.table} borderStyle={{borderWidth: 0, borderColor: '#000000'}}>
-              <Rows data={tableData} textStyle={styles.text} widthArr={[100, 300]}/>
-            </Table>
           </View>
 
         </View>
@@ -106,7 +111,6 @@ const styles = StyleSheet.create({
   table: { width: 360 },
   text: { textAlign: 'center' },
   row: { height: 28 },
-
   container: {
     flex: 1,
     backgroundColor: '#d1e231',
@@ -115,10 +119,10 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   spacing: {
-    marginTop: 20
+    marginTop: 50
   },
   spacing2: {
-    marginTop: 45
+    marginTop:30
   },
   body: {
     padding: 5,
@@ -148,7 +152,15 @@ const styles = StyleSheet.create({
   saveText:{
     color:'#fff',
     textAlign:'center',
-    fontSize: 25,
+    fontSize: 20,
     marginTop: 4
+  },
+  title: {
+    fontSize: 26,
+    color: '#ffffff',
+    textAlign: 'center',
+  },
+  header: {
+    backgroundColor: 'black',
   }
 });

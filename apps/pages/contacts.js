@@ -3,64 +3,35 @@ import { View, Text, FlatList, ActivityIndicator, Platform, StyleSheet, TextInpu
 import { List, ListItem, SearchBar } from "react-native-elements";
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux';
-import Tabbar from 'react-native-tabbar-bottom';
-import Icon from 'react-native-ionicons';
+import { Container, Header, Content, Footer, FooterTab, Button, Icon, Body, Title } from 'native-base';
 
-import NavigationBar from 'react-native-navbar';
-
-// import { Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
+import Tabbar from '../components/tabbar';
 
 export default class Contacts extends Component {
+
   constructor() {
-    super();
-    this.state = { loading: false, usernames: {}, error: null, refreshing: false, myusername: null, contact_list: [{"uname":"VALUE", "name": "VALUE"}] };
-    var em = firebase.auth().currentUser.email;
-    var db = firebase.database().ref();
-    //alert("1");
+      super();
+      this.state = { loading: false, error: null, refreshing: false, myusername: null, contact_list: [] };
+      var em = firebase.auth().currentUser.email;
+      var db = firebase.database().ref();
 
-    jsonParse = () => {
-      //alert("6");
-        var jsonObj = {};
-        for (var key in this.state.usernames) {
-            //alert("7");
-            //alert(key);
-            //if (this.state.usernames.hasOwnProperty(key)) {
-            jsonObj = {"uname" : key, "name" : this.state.usernames[key]}
-                //alert(JSON.stringify(jsonObj));
-            this.state.contact_list.push(jsonObj);
-                //alert(JSON.stringify(this.state.contact_list));
-            //}
-        }
-        //alert("8");
-        //alert("CONTACT LIST: " + JSON.stringify(this.state.contact_list))
-        /*for (var i = 0; i < this.state.contact_list.length; i++) {
-            alert(JSON.stringify(this.state.contact_list[i]));
-        }*/
-    }
-    //alert("2");
+      //adds current user as the first contact
+      db.child("MAP").child(em.substring(0, em.length-4)).on('value', snapshot => {
+          this.state.contact_list.push({"name": snapshot.val()["name"] + " (You)", "username": snapshot.val()["username"]});
+      });
 
-
-    //alert(em);
-    db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
-        //alert("3");
+      //grabs all my contact sby usersname and appends each as a json object to the contact list
+      db.child("MAP").child(em.substring(0, em.length-4)).child("username").on('value', snapshot => {
         this.setState({ myusername: snapshot.val() }, function() {
-            alert("4");
             db.child("Users").child(this.state.myusername).child('Contacts').on('value', snapshot => {
-                //alert("5");
-                //alert("SNAPSHOT VAL: " + JSON.stringify(snapshot.val()));
-                this.setState({ usernames: snapshot.val() })
-                //alert("USERNAMES LIST: " + this.state.usernames);
-                jsonParse();
-                //alert("CONTACT LIST 2: " + JSON.stringify(this.state.contact_list))
-                //alert(JSON.stringify(snapshot.val()));
+                for(var key in snapshot.val()){
+                  this.state.contact_list.push({"name": snapshot.val()[key]["name"], "username": snapshot.val()[key]["username"]});
+                }
             })
       });
     });
   }
 
-  listClick = (item) => {
-      alert(JSON.stringify(item));
-  }
 
   renderSeparator = () => {
     return (
@@ -77,50 +48,66 @@ export default class Contacts extends Component {
 
   renderHeader = () => {
     return (
-        <NavigationBar
-          tintColor="#006600"
-          title={titleConfig}
-          leftButton={leftButtonConfig}
-          rightButton={rightButtonConfig}
-        />
+      <View style={{
+          height: 55,
+          backgroundColor: "black"}}>
+
+          <Text style={{ fontSize: 26, textAlign: 'center', color:'#ffffff', marginTop: 10}}>Contacts</Text>
+
+      </View>
       );
+  };
+
+  renderFooter = () => {
+    if (!this.state.loading) return null;
+
+    return (
+      <View
+        style={{
+          paddingVertical: 20,
+          borderTopWidth: 1,
+          borderColor: "#CED0CE"
+        }}
+      >
+        <ActivityIndicator animating size="large" />
+      </View>
+    );
   };
 
   render() {
     return (
+      <View style={styles.cont}>
+      <View style={styles.cont}>
       <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }} style={{backgroundColor: '#d1e231'}}>
         <FlatList
           data={this.state.contact_list}
           renderItem={({ item }) => (
-            <TouchableWithoutFeedback onPress={() => Actions.contactdetails({pname: item["name"], username: item["uname"]})}>
-              <ListItem
-                title={item["name"]}
-                subtitle={item["uname"]}
-                containerStyle={{ borderBottomWidth: 0 }}
-              />
+            <TouchableWithoutFeedback onPress={() => Actions.contactdetails({pname: item["name"], username: item["username"]})}>
+            <ListItem
+            title={item["name"]}
+            subtitle={item["username"]}
+              containerStyle={{ borderBottomWidth: 0 }}
+            />
+
             </TouchableWithoutFeedback>
-          )}
-          keyExtractor={item => item["uname"]}
-          ItemSeparatorComponent={this.renderSeparator}
-          ListHeaderComponent={this.renderHeader}
+            )}
+            keyExtractor={item => item["username"]}
+            ItemSeparatorComponent={this.renderSeparator}
+            ListHeaderComponent={this.renderHeader}
         />
+
       </List>
+      </View>
+        <Tabbar/>
+      </View>
+
     );
   }
 }
 
-const rightButtonConfig = {
-    title: 'QR',
-    handler: () => Actions.qr(),
-    tintColor: '#000000'
-};
-
-const leftButtonConfig = {
-    title: 'Settings',
-    handler: () => Actions.home(),
-    tintColor: '#000000'
-};
-
-const titleConfig = {
-    title: 'Contacts',
+const styles= StyleSheet.create({
+cont : {
+   flex: 1,
+   backgroundColor: "#d1e231",
 }
+});
